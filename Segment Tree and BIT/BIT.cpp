@@ -1,3 +1,4 @@
+///Single BIT that handles point update, range query
 namespace BIT{
     const int N = 400005;
     int bit[N];
@@ -17,7 +18,8 @@ namespace BIT{
     }
 }
 
-namespace BIT2D{
+///Several BIT that handles point update, range query
+namespace Multiple_BIT{
     const int N = 400005;
     const int M = 61;
     int bit[M][N];
