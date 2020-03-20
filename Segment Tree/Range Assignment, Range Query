@@ -1,0 +1,44 @@
+namespace SegTree{
+    const int MAXN = 400005;
+    LL Tree[4 * N],Lazy[4 * N];
+
+    void push(int node,int L,int R)
+    {
+        if(Lazy[node]){
+            Tree[node] = Lazy[node];
+
+            if(L != R){
+                Lazy[2 * node] = Lazy[node];
+                Lazy[2 * node + 1] = Lazy[node];
+            }
+            Lazy[node] = 0;
+        }
+    }
+    void update(int node,int L,int R,int l,int r,LL v)
+    {
+        push(node,L,R);
+        if(r < L or R < l)return;
+
+        if(L >= l and R <= r){
+            Lazy[node] = v;
+            push(node,L,R);
+            return;
+        }
+        int mid = (L + R)/2;
+        update(2 * node,L,mid,l,r,v);
+        update(2 * node + 1,mid + 1,R,l,r,v);
+        Tree[node] = (Tree[node * 2] | Tree[node * 2 + 1]);
+    }
+    LL query(int node,int L,int R,int l,int r)
+    {
+        push(node,L,R);
+        if(r < L or R < l)return 0;
+        if(L >= l and R <= r){
+            return Tree[node];
+        }
+        int mid = (L + R)/2;
+        LL x = query(2 * node,L,mid,l,r);
+        LL y = query(2 * node + 1,mid + 1,R,l,r);
+        return (x | y);
+    }
+}
