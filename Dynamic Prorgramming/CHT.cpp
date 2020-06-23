@@ -85,7 +85,7 @@ LL dp[N];
 vector<pll>ara;
 vector<LL>g[M];
 LL n;
-
+///In the expression variables with 'i' will be my X. 
 int main()
 {
     #ifdef VAMP
