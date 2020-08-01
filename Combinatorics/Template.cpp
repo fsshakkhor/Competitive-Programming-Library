@@ -79,8 +79,8 @@ struct Combinatorics{
     {
         if(n < r)return 0;
         LL u = fac[n];
-        LL v = (fac[r] * fac[n - r]) % MOD;
-        return (u * BigMod(v,MOD-2,MOD)) % MOD;
+        LL v = (inv[r] * inv[n - r]) % MOD;
+        return (u * v) % MOD;
     }
 }combi;
 
