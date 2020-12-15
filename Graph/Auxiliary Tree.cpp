@@ -1,3 +1,5 @@
+//https://codeforces.com/contest/613/problem/D
+
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -103,6 +105,7 @@ int n , q;
 
 //That will hold the auxilary tree
 vector<int>Tree[N];
+int imp[N];
 
 vector<int> build_auxiliary_tree(vector<int>&nodes){
     nodes.push_back(1);
@@ -137,6 +140,32 @@ vector<int> build_auxiliary_tree(vector<int>&nodes){
 	}
     return v;
 }
+
+int ans;
+int DFS(int node){
+
+    if(imp[node] == 0){
+        int s = 0;
+        for(int i : Tree[node]){
+            s += DFS(i);
+        }
+        if(s > 1){
+            ans++;
+            return 0;
+        }
+        return s;
+    }else{
+        int s = 0;
+        for(int i : Tree[node]){
+            int x = DFS(i);
+            s += x;
+            if(imp[i])ans = -1e9;
+        }
+        ans += s;
+        return 1;
+    }
+
+}
 int main()
 {
     #ifdef VAMP
@@ -144,6 +173,7 @@ int main()
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
+    FastRead
     cin >> n;
     FOR(i,1,n-1){
         int u , v;
@@ -161,11 +191,16 @@ int main()
         for(int j = 1;j <= k;j++){
             int c;cin >> c;
             nodes.push_back(c);
+            imp[c] = 1;
         }
         vector<int>v = build_auxiliary_tree(nodes);
-
+        ans = 0;
+        DFS(1);
+        if(ans < 0)cout << -1 << "\n";
+        else cout << ans << "\n";
 
         for(int i : v)Tree[i].clear();
+        for(int i : nodes)imp[i] = 0;
     }
     #ifdef VAMP
         fprintf(stderr, "\n>> Runtime: %.10fs\n", (double) (clock() - tStart) / CLOCKS_PER_SEC);
