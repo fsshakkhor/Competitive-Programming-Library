@@ -1,3 +1,4 @@
+//https://codeforces.com/problemset/problem/633/G
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -53,26 +54,27 @@ using namespace std;
 #endif
 const int N = 100005;
 
-int n , m , q , ara[N];
+int n , m , q , ara[N] , newara[N];
 vector<int>g[N];
 
-bitset<1000>Tree[4 * N];
+bitset<1000>Tree[4 * N] , primes;
 int lazy[4 * N];
 
 void build(int node,int L,int R){
     if(L == R){
-        Tree[node][ara[L]] = 1;
+        Tree[node][newara[L]] = 1;
         return;
     }
     int mid = (L + R) >> 1;
     build(node * 2,L,mid);
     build(node * 2 + 1,mid + 1,R);
-    Tree[node] = Tree[node * 2] | Tree[node * 2 + 1];
+    Tree[node] = (Tree[node * 2] | Tree[node * 2 + 1]);
 }
 
 void push(int node,int L,int R){
     bitset<1000>sft = Tree[node] >> (m - lazy[node]);
     Tree[node] = sft | (Tree[node] << lazy[node]);
+
     if(L != R){
         lazy[node * 2] = (lazy[node] + lazy[node * 2]) % m;
         lazy[node * 2 + 1] = (lazy[node] + lazy[node * 2 + 1]) % m;
@@ -81,27 +83,40 @@ void push(int node,int L,int R){
 }
 
 void update(int node,int L,int R,int l,int r,int sft){
+    push(node,L,R);
+    if(R < l or r < L)return;
     if(L >= l and R <= r){
-        lazy[node] = (lazy[node] + sft) % m;
+        lazy[node] = sft;
         push(node,L,R);
         return;
     }
     int mid = (L + R) >> 1;
-    push(node,L,R);
     update(2 * node,L,mid,l,r,sft);
     update(2 * node + 1,mid + 1,R,l,r,sft);
-    Tree[node] = Tree[node * 2] | Tree[node * 2 + 1];
+    Tree[node] = (Tree[node * 2] | Tree[node * 2 + 1]);
 }
 
 bitset<1000>query(int node,int L,int R,int l,int r){
-    if(lazy[node])push(node,L,R);
+    push(node,L,R);
     if(R < l or r < L)return bitset<1000>();
     if(L >= l and R <= r)return Tree[node];
     int mid = (L + R) >> 1;
     return query(2 * node,L,mid,l,r) | query(2 * node + 1,mid + 1,R,l,r);
 }
 
+int st[N] , ed[N];
+int timer = 0;
 
+void dfs(int node,int pre){
+    st[node] = ++timer;
+    newara[timer] = ara[node];
+
+    for(int i : g[node]){
+        if(i == pre)continue;
+        dfs(i,node);
+    }
+    ed[node] = timer;
+}
 int main()
 {
     #ifdef VAMP
@@ -109,7 +124,16 @@ int main()
         freopen("input.txt", "r", stdin);
         freopen("output.txt", "w", stdout);
     #endif
+    FastRead
     cin >> n >> m;
+	for (int i=2;i<m;i++) {
+		bool ok = 1;
+		for (int j=2;j*j<=i;j++) {
+			if (i%j==0) ok = 0;
+		}
+		primes[i] = ok;
+	}
+
     FOR(i,1,n){
         cin >> ara[i];
         ara[i] %= m;
@@ -120,7 +144,23 @@ int main()
         g[u].push_back(v);
         g[v].push_back(u);
     }
+    dfs(1,1);
     build(1,1,n);
+
+    cin >> q;
+    FOR(i,1,q){
+        int tp;
+        cin >> tp;
+        if(tp == 1){
+            int v , x;
+            cin >> v >> x;
+            update(1,1,n,st[v],ed[v],x % m);
+        }else{
+            int v;cin >> v;
+            bitset<1000>B = query(1,1,n,st[v],ed[v]);
+            cout << (B & primes).count() << "\n";
+        }
+    }
     #ifdef VAMP
         fprintf(stderr, "\n>> Runtime: %.10fs\n", (double) (clock() - tStart) / CLOCKS_PER_SEC);
     #endif
