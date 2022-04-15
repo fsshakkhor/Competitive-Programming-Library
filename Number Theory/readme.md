@@ -4,7 +4,7 @@
 
 #### Miller Rabin
 
-**Witness** function return true if founds a divisor of the number. But this algorithm is not deterministic. So we run it several times to decrease the error rate.
++ **Witness** function return true if founds a divisor of the number. But this algorithm is not deterministic. So we run it several times to decrease the error rate.
 
 #### Pollard Rho
-**factorize** function provides you with the prime divisiors with frequencies. **n** is the number we want to factorize, **ans** is our output.
++ **factorize** function provides you with the prime divisiors with frequencies. **n** is the number we want to factorize, **ans** is our output.
