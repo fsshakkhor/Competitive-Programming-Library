@@ -2,6 +2,15 @@
 
 + Try to explore multiplicative properties of a function
 
+#### Sieve of Eratosthenes
++ Finds All primes under **N** in **O(N log log N)** 
+
+#### Totient Function / Phi Function
++ Finds Phi value of a number in **O(sqrt(N))**
+
+#### Totient Function From 1 to N
++ Precomputes all phi values in **O(N log log N)**
+
 #### Miller Rabin
 
 + **Witness** function return true if founds a divisor of the number. But this algorithm is not deterministic. So we run it several times to decrease the error rate.
