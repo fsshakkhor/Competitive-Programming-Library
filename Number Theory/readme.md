@@ -5,6 +5,9 @@
 #### Sieve of Eratosthenes
 + Finds All primes under **N** in **O(N log log N)** 
 
+#### Modular Exponentiation 
++ Given **B**(Base), **P**(Power), **M**(Mod). It will return the value of **(B^P) % M**.
+
 #### Totient Function / Phi Function
 + Finds Phi value of a number in **O(sqrt(N))**
 
