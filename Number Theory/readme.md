@@ -11,6 +11,9 @@
 #### Totient Function From 1 to N
 + Precomputes all phi values in **O(N log log N)**
 
+#### Chinese Remainder Theorem
++ **ar** stores all the remainders, **mods** stores all the mod base.
+
 #### Miller Rabin
 
 + **Witness** function return true if founds a divisor of the number. But this algorithm is not deterministic. So we run it several times to decrease the error rate.
